@@ -12,4 +12,4 @@ function executeRinha(filePath, environment = {}) {
   }
 }
 
-executeRinha("./var/rinha/hello.json", {});
+executeRinha("./var/rinha/fib.json", {});

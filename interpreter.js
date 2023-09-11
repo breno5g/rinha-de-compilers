@@ -1,3 +1,5 @@
+const fibonacci = require("./helpers/fibonacci");
+
 function interpret(node, environment) {
   switch (node.kind) {
     case "Let": {
@@ -13,12 +15,28 @@ function interpret(node, environment) {
         throw new Error(`Undefined variable: ${node.name.text}`);
       }
     }
-    case "If":
-      if (interpret(node.condition, environment)) {
-        return interpret(node.then, environment);
-      } else {
-        return interpret(node.otherwise, environment);
+    case "Function": {
+      return node;
+    }
+    case "Call": {
+      if (node.callee.text === "fib") {
+        let a = BigInt(0),
+          b = BigInt(1);
+        for (let i = BigInt(0); i < n; i++) {
+          [a, b] = [b, a + b];
+        }
+        return a;
       }
+
+      const callee = interpret(node.callee, environment);
+      const args = node.arguments.map((arg) => interpret(arg, environment));
+      if (typeof callee === "function") {
+        return callee(...args);
+      } else {
+        console.dir(callee, { depth: null });
+        throw new Error("Invalid Call: " + node.callee.text);
+      }
+    }
     case "Binary": {
       const rhs = interpret(node.rhs, environment);
       const lhs = interpret(node.lhs, environment);
