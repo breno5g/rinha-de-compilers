@@ -13,7 +13,7 @@ describe("Sub tests", () => {
 
       interpreter(ast.expression, {});
 
-      expect(console.log.mock.calls[0][0]).toBe(206);
+      expect(console.log).toHaveBeenCalledWith(206);
     });
 
     it("Should sub 32131 - 3213", () => {
@@ -22,7 +22,7 @@ describe("Sub tests", () => {
 
       interpreter(ast.expression, {});
 
-      expect(console.log.mock.calls[0][0]).toBe(28918);
+      expect(console.log).toHaveBeenCalledWith(28918);
     });
   });
 
@@ -33,7 +33,7 @@ describe("Sub tests", () => {
 
       interpreter(ast.expression, {});
 
-      expect(console.log.mock.calls[0][0]).not.toBe(0);
+      expect(console.log).not.toHaveBeenCalledWith(0);
     });
 
     it("Should sub 32131 - 3213", () => {
@@ -42,7 +42,7 @@ describe("Sub tests", () => {
 
       interpreter(ast.expression, {});
 
-      expect(console.log.mock.calls[0][0]).not.toBe(0);
+      expect(console.log).not.toHaveBeenCalledWith(0);
     });
   });
 });
