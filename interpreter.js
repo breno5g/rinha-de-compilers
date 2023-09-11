@@ -9,6 +9,9 @@ function interpret(node, environment) {
     case "Str": {
       return node.value;
     }
+    case "Int": {
+      return node.value;
+    }
     case "Print": {
       console.log(interpret(node.value, environment));
       return null;
