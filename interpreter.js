@@ -1,5 +1,11 @@
 function interpret(node, environment) {
   switch (node.kind) {
+    case "Let": {
+      return interpret(node.next, {
+        ...environment,
+        [node.name.text]: node.value,
+      });
+    }
     case "Str": {
       return node.value;
     }
