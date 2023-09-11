@@ -13,6 +13,12 @@ function interpret(node, environment) {
         throw new Error(`Undefined variable: ${node.name.text}`);
       }
     }
+    case "If":
+      if (interpret(node.condition, environment)) {
+        return interpret(node.then, environment);
+      } else {
+        return interpret(node.otherwise, environment);
+      }
     case "Binary": {
       const rhs = interpret(node.rhs, environment);
       const lhs = interpret(node.lhs, environment);
