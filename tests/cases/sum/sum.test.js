@@ -13,7 +13,7 @@ describe("Sum tests", () => {
 
       interpreter(ast.expression, {});
 
-      expect(console.log.mock.calls[0][0]).toBe(256);
+      expect(console.log).toHaveBeenCalledWith(256);
     });
 
     it("Should sum 3213 + 32131 numbers", () => {
@@ -22,7 +22,7 @@ describe("Sum tests", () => {
 
       interpreter(ast.expression, {});
 
-      expect(console.log.mock.calls[0][0]).toBe(35344);
+      expect(console.log).toHaveBeenCalledWith(35344);
     });
   });
 
@@ -33,7 +33,7 @@ describe("Sum tests", () => {
 
       interpreter(ast.expression, {});
 
-      expect(console.log.mock.calls[0][0]).not.toBe(0);
+      expect(console.log).not.toHaveBeenCalledWith(0);
     });
 
     it("Should sum 3213 + 32131 numbers", () => {
@@ -42,7 +42,7 @@ describe("Sum tests", () => {
 
       interpreter(ast.expression, {});
 
-      expect(console.log.mock.calls[0][0]).not.toBe(0);
+      expect(console.log).not.toHaveBeenCalledWith(0);
     });
   });
 });
