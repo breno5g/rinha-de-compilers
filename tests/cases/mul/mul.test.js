@@ -14,7 +14,7 @@ describe("Mul", () => {
 
       interpreter(ast.expression, {});
 
-      expect(console.log.mock.calls[0][0]).toBe(5775);
+      expect(console.log).toHaveBeenCalledWith(5775);
     });
 
     it("Should mul 32131 * 3213", () => {
@@ -23,7 +23,7 @@ describe("Mul", () => {
 
       interpreter(ast.expression, {});
 
-      expect(console.log.mock.calls[0][0]).toBe(103236903);
+      expect(console.log).toHaveBeenCalledWith(103236903);
     });
   });
 
@@ -34,7 +34,7 @@ describe("Mul", () => {
 
       interpreter(ast.expression, {});
 
-      expect(console.log.mock.calls[0][0]).not.toBe(0);
+      expect(console.log).not.toHaveBeenCalledWith(0);
     });
 
     it("Should mul 32131 * 3213", () => {
@@ -43,7 +43,7 @@ describe("Mul", () => {
 
       interpreter(ast.expression, {});
 
-      expect(console.log.mock.calls[0][0]).not.toBe(0);
+      expect(console.log).not.toHaveBeenCalledWith(0);
     });
   });
 });
