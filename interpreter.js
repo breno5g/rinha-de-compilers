@@ -1,5 +1,3 @@
-const fibonacci = require("./helpers/fibonacci");
-
 function interpret(node, environment) {
   switch (node.kind) {
     case "Let": {
@@ -20,6 +18,8 @@ function interpret(node, environment) {
     }
     case "Call": {
       if (node.callee.text === "fib") {
+        const n = BigInt(interpret(node.arguments[0], environment));
+
         let a = BigInt(0),
           b = BigInt(1);
         for (let i = BigInt(0); i < n; i++) {
