@@ -1,20 +1,44 @@
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures
+// https://medium.com/@stephanowallace/javascript-mas-afinal-o-que-s%C3%A3o-closures-4d67863ca9fc
+class Closure {
+  constructor(term, environment) {
+    this.term = term;
+    this.environment = { ...environment };
+  }
+}
+
 function interpret(node, environment) {
   switch (node.kind) {
     case "Let": {
+      const name = node.name.text;
+      const value = interpret(node.value, environment);
+
+      if (value instanceof Closure) {
+        value.environment[name] = value;
+      }
+
       return interpret(node.next, {
         ...environment,
-        [node.name.text]: node.value,
+        [name]: value,
       });
     }
     case "Var": {
       if (node.text in environment) {
         return environment[node.text];
-      } else {
-        throw new Error(`Undefined variable: ${node.name.text}`);
       }
+
+      throw new Error(`Undefined variable: ${node.text}`);
     }
     case "Function": {
-      return node;
+      return new Closure(node, environment);
+    }
+    case "If": {
+      const condition = interpret(node.condition, environment);
+      if (condition) {
+        return interpret(node.then, environment);
+      } else {
+        return interpret(node.otherwise, environment);
+      }
     }
     case "Call": {
       if (node.callee.text === "fib") {
@@ -29,66 +53,59 @@ function interpret(node, environment) {
       }
 
       const callee = interpret(node.callee, environment);
-      const args = node.arguments.map((arg) => interpret(arg, environment));
-      if (typeof callee === "function") {
-        return callee(...args);
-      } else {
-        console.dir(callee, { depth: null });
-        throw new Error("Invalid Call: " + node.callee.text);
+
+      if (callee instanceof Closure) {
+        const args = node.arguments.map((arg) => interpret(arg, environment));
+        const reducedArgs = callee.term.parameters.reduce((acc, arg, index) => {
+          acc[arg.text] = args[index];
+          return acc;
+        }, {});
+
+        const newEnvironment = { ...callee.environment, ...reducedArgs };
+
+        return interpret(callee.term.value, newEnvironment);
       }
+
+      throw new Error("Invalid Call: " + node.callee.text);
     }
     case "Binary": {
       const rhs = interpret(node.rhs, environment);
       const lhs = interpret(node.lhs, environment);
 
       switch (node.op) {
-        case "Add": {
+        case "Add":
           return lhs + rhs;
-        }
-        case "Sub": {
+        case "Sub":
           return lhs - rhs;
-        }
-        case "Mul": {
+        case "Mul":
           return lhs * rhs;
-        }
-        case "Div": {
+        case "Div":
           return lhs / rhs;
-        }
-        case "Eq": {
+        case "Eq":
           return lhs === rhs;
-        }
-        case "Neq": {
+        case "Neq":
           return lhs !== rhs;
-        }
-        case "Lt": {
+        case "Lt":
           return lhs < rhs;
-        }
-        case "Gt": {
+        case "Gt":
           return lhs > rhs;
-        }
-        case "Lte": {
+        case "Lte":
           return lhs <= rhs;
-        }
-        case "Gte": {
+        case "Gte":
           return lhs >= rhs;
-        }
-        case "And": {
+        case "And":
           return lhs && rhs;
-        }
-        case "Or": {
+        case "Or":
           return lhs || rhs;
-        }
         default: {
           throw new Error(`Unexpected binary operator: ${node.op}`);
         }
       }
     }
-    case "Str": {
+    case "Str":
       return node.value;
-    }
-    case "Int": {
+    case "Int":
       return node.value;
-    }
     case "Print": {
       console.log(interpret(node.value, environment));
       return null;
