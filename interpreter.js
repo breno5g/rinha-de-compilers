@@ -106,6 +106,8 @@ function interpret(node, environment) {
       return node.value;
     case "Int":
       return node.value;
+    case "Bool":
+      return node.value;
     case "Print": {
       console.log(interpret(node.value, environment));
       return null;
