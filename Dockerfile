@@ -9,9 +9,7 @@ COPY package*.json ./
 RUN npm install
 
 # Copying source files
-COPY index.js ./
-COPY interpreter.js ./
-COPY ./var/rinha/fib.json ./var/rinha/fib.json
+COPY . .
 
 # Executing the app
-CMD [ "node", "index.js" ]
+CMD ["node", "index.js", "./var/rinha/source.rinha.json"]
