@@ -1,10 +1,13 @@
 const fs = require("fs");
 const interpreter = require("./interpreter");
 
-function executeRinha(filePath = "./var/rinha/fib.json", environment = {}) {
+function executeRinha(
+  filePath = "/var/rinha/source.rinha.json",
+  environment = {}
+) {
   try {
     const args = process.argv.slice(2);
-    if (args[0]) filePath = `${args[0]}`;
+    if (args[0]) filePath = args[0];
     const data = fs.readFileSync(filePath, "utf8");
     const ast = JSON.parse(data);
     return interpreter(ast.expression, environment);
@@ -14,4 +17,4 @@ function executeRinha(filePath = "./var/rinha/fib.json", environment = {}) {
   }
 }
 
-executeRinha({});
+executeRinha();

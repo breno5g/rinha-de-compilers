@@ -12,4 +12,4 @@ RUN npm install
 COPY . .
 
 # Executing the app
-CMD ["node", "index.js", "./var/rinha/source.rinha.json"]
+CMD ["node", "index.js"]
